@@ -1,6 +1,6 @@
 # N年前写的年会抽奖程序
 
-[demo](https://github.com/icemanyandy/eggshellstickers.emily)
+[demo](https://icemanyandy.github.io/eggshellstickers.emily/)
 
 
 
