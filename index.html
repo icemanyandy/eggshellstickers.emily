@@ -4,7 +4,7 @@
     <meta name="screen-orientation" content="portrait">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
-    <title>年会抽奖小程序</title>
+    <title>@Eggshellstickers.emily</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/wall.css">
     <style type="text/css">
@@ -135,17 +135,47 @@
             margin-right: 30px;
             text-decoration: none;
             color: white;
+        }.result-btn1 {
+            position: absolute;
+            height: 40px;
+            width: 100%;
+            left: 0; top: 0.1%;
+            margin-top: 10px;
+            text-align: center;
+            padding: 10px;
+        }
+		.result-btn2 {
+            position: absolute;
+            height: 40px;
+            width: 100%;
+            left: 0; bottom: 10%;
+            margin-top: 210px;
+            text-align: center;
+            padding: 10px;
+
         }
     </style>
 </head>
 <body>
 <div id="main" class="wall">
-    <div class="result-btn">
-       <a href="./result.html" target="_blank">获奖名单</a>
+   <a href="./result.html" target="_blank"> <div class="result-btn">
+       Winners List
     </div>
+	</a>
+	<div class="result-btn1">
+	  	<img src="./img/eggshell++sticker+emily+logo.webp"  width="200" height="70">	
+	 </div>
+<div class="result-btn2">
+	<p style="color:#FFFFFF"><b> Source code at : https://github.com/fouber/lottery
+	</p>
+	</b>	
 </div>
+</div>
+
+
 <div id="result" class="result">
 </div>
+
 <div id="tools" class="tools">
      <button
         v-for="value in btns"
@@ -157,26 +187,33 @@
        class="pure-button"
        @click="toggle"
        :class="{'button-secondary': !running,
-               'button-success': running}">{{running?'停!':'开始'}}</button>
-    <button class="pure-button button-warning" @click="reset">重置</button>
+               'button-success': running}">{{running?'Stop!':'Go'}}</button>
+    <button class="pure-button button-warning" @click="reset">Reset</button>
+
+
 </div>
+
 <script type="text/javascript" src="js/zepto.js"></script>
 <script type="text/javascript" src="js/vue.js"></script>
 <script type="text/javascript" src="js/tagcanvas.js"></script>
 <script type="text/javascript" src="js/member.js"></script>
 <script type="text/javascript">
-    (function(){
+ 
+
+    function init(people){
         var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
         console.log(choosed);
         var speed = function(){
             return [0.1 * Math.random() + 0.01, -(0.1 * Math.random() + 0.01)];
         };
+		
         var getKey = function(item){
             return item.name + '-' + item.phone;
         };
+		
         var createHTML = function(){
             var html = [ '<ul>' ];
-            member.forEach(function(item, index){
+            people.forEach(function(item, index){
                 item.index = index;
                 var key = getKey(item);
                 var color = choosed[key] ? 'yellow' : 'white';
@@ -188,7 +225,7 @@
         var lottery = function(count){
             var list = canvas.getElementsByTagName('a');
             var color = 'yellow';
-            var ret = member
+            var ret = people
                 .filter(function(m, index){
                     m.index = index;
                     return !choosed[getKey(m)];
@@ -205,7 +242,7 @@
                 .map(function(m){
                   choosed[getKey(m)] = 1;
                   list[m.index].style.color = color;
-                  return m.name + '<br/>' + m.phone; 
+                  return m.name  ; 
                 });
             localStorage.setItem('choosed', JSON.stringify(choosed));
             return ret;
@@ -213,15 +250,15 @@
         var canvas = document.createElement('canvas');
         canvas.id = 'myCanvas';
         canvas.width = document.body.offsetWidth;
-        canvas.height = document.body.offsetHeight;
+        canvas.height = document.body.offsetHeight-100;
         document.getElementById('main').appendChild(canvas);
         new Vue({
             el: '#tools',
             data: {
-                selected: 30,
+                selected: 1,
                 running: false,
                 btns: [
-                    30, 10, 5, 2, 1
+                    1,2,3
                 ]
             },
             mounted () {
@@ -253,12 +290,12 @@
                             $('#result').css('display', 'block').html('<span>已抽完</span>');
                             return
                         }
-                        $('#result').css('display', 'block').html('<span>' + ret.join('</span><span>') + '</span>');
+                        $('#result').css('display', 'block').html('<span><font size=\"3\" >Winner!</font><br>' + ret.join('</span><span>') + '<br/><font size=\"3\" >Congratulations!</font></span>');
                         TagCanvas.Reload('myCanvas');
                         setTimeout(function(){
                             localStorage.setItem(new Date().toString(), JSON.stringify(ret));
                             $('#main').addClass('mask');
-                        }, 300);
+                        }, 800);
                     } else {
                         $('#result').css('display', 'none');
                         $('#main').removeClass('mask');
@@ -268,7 +305,33 @@
                 }
             }
         });
-    })();
+    };
+	
+	var people = [];
+	
+	function readTextFile(url) {
+		var rawFile = new XMLHttpRequest();
+		rawFile.open("GET", url, false);
+		rawFile.onreadystatechange = function () {
+			if (rawFile.readyState === 4 && rawFile.status === 200) {
+				var allText = rawFile.responseText;
+				var lines = allText.split("\n");
+				var i = 1
+				for (var line of lines) {
+					var g  = new Object();
+					g.name = line
+					g.phone = i;
+					i++;
+					people.push(g)
+				}
+				 
+				init(people)
+			}
+		}
+		rawFile.send();
+	}
+ 
+	readTextFile("js/data.js"); 
 </script>
 </body>
 </html>
