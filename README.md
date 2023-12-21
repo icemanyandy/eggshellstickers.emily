@@ -1,14 +1,14 @@
-# N年前写的年会抽奖程序
+# Lottery program for emily
 
 [demo](https://icemanyandy.github.io/eggshellstickers.emily/)
 
 
 
-## 抽奖流程：
+## Lottery process:
 
-1. 选择当次要抽奖的人数（30、10、5、2、1）
-2. 点击『开始』按钮，进入抽奖状态（这个过程仍可修改抽奖人数）
-3. 点击『停！』按钮，生成抽奖结果
-4. 点击任意人数按钮，可以回到闲置状态，已中奖的用户标记为黄色，不会二次命中
+1. Choose the number of people for the secondary draw (3, 2, 1)
+2. Click the "Start" button to enter the lottery state (the number of people in the lottery can still be modified during this process)
+3. Click "Stop!" 』 button to generate lottery results
+4. Click the button of any number of people to return to the idle state. Users who have won the prize are marked in yellow and will not be hit twice.
 
-PS：滚动鼠标滚轮，可以放大或缩小球体
+PS: Roll the mouse wheel to zoom in or out of the sphere.
